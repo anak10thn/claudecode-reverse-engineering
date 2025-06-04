@@ -341,9 +341,10 @@ export function parseArgs(
   
   // Throw if there are errors
   if (errors.length > 0) {
-    throw createUserError(`Invalid arguments: ${errors.join('; ')}`, {
+    const errorMessage = errors.filter((e, i, a) => a.indexOf(e) === i).join('; ');
+    throw createUserError(`Invalid arguments: ${errorMessage}`, {
       category: ErrorCategory.VALIDATION,
-      resolution: `Use 'juriko-code help ${command.name}' to see usage information.`
+      resolution: `Use 'juriko-code help ${command.name}' to see usage information.\nExample: ${command.examples?.[0] || `juriko-code ${command.name}`}`
     });
   }
   

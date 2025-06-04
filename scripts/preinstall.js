@@ -7,8 +7,8 @@
 
 // Check if running on Windows
 if (process.platform === 'win32') {
-  console.error('\x1b[31m%s\x1b[0m', 'Error: Claude Code is not supported on Windows.');
-  console.error('\x1b[33m%s\x1b[0m', 'Claude Code requires macOS or Linux to run properly.');
+  console.error('\x1b[31m%s\x1b[0m', 'Error: Juriko Code is not supported on Windows.');
+  console.error('\x1b[33m%s\x1b[0m', 'Juriko Code requires macOS or Linux to run properly.');
   console.error('\x1b[33m%s\x1b[0m', 'If you are using WSL (Windows Subsystem for Linux):');
   console.error('\x1b[33m%s\x1b[0m', '  1. Make sure you are running npm install from within the WSL terminal, not from PowerShell or CMD');
   console.error('\x1b[33m%s\x1b[0m', '  2. If you\'re still seeing this message in WSL, your environment may be incorrectly reporting as Windows');
@@ -19,7 +19,7 @@ if (process.platform === 'win32') {
 // Check Node.js version
 const nodeMajorVersion = process.versions.node.split('.')[0];
 if (parseInt(nodeMajorVersion, 10) < 18) {
-  console.error('\x1b[31m%s\x1b[0m', 'Error: Claude Code requires Node.js version 18 or higher.');
+  console.error('\x1b[31m%s\x1b[0m', 'Error: Juriko Code requires Node.js version 18 or higher.');
   console.error('\x1b[33m%s\x1b[0m', `Current Node.js version is ${process.versions.node}`);
   console.error('\x1b[33m%s\x1b[0m', 'Please update your Node.js installation before continuing.');
   console.error('\x1b[33m%s\x1b[0m', 'Visit https://nodejs.org to download the latest version.');

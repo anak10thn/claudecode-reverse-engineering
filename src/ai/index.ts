@@ -1,7 +1,7 @@
 /**
  * AI Module
  * 
- * Provides AI capabilities using Claude, Anthropic's large language model.
+ * Provides AI capabilities using Juriko, Anthropic's large language model.
  * This module handles initialization, configuration, and access to AI services.
  */
 
@@ -9,7 +9,7 @@ import { AIClient } from './client.js';
 import { logger } from '../utils/logger.js';
 import { createUserError } from '../errors/formatter.js';
 import { ErrorCategory } from '../errors/types.js';
-import { authManager } from '../auth/index.js';
+import { getAuthToken } from '../auth/env.js';
 
 // Singleton AI client instance
 let aiClient: AIClient | null = null;
@@ -21,22 +21,8 @@ export async function initAI(config: any = {}): Promise<AIClient> {
   logger.info('Initializing AI module');
   
   try {
-    // Check if we have authentication
-    if (!authManager.isAuthenticated()) {
-      throw createUserError('Authentication required for AI services', {
-        category: ErrorCategory.AUTHENTICATION,
-        resolution: 'Please log in using the login command or provide an API key.'
-      });
-    }
-    
-    // Get the auth token
-    const authToken = authManager.getToken();
-    if (!authToken || !authToken.accessToken) {
-      throw createUserError('No valid authentication token available', {
-        category: ErrorCategory.AUTHENTICATION,
-        resolution: 'Please log in again with the login command.'
-      });
-    }
+    // Get auth token from environment
+    const authToken = getAuthToken();
     
     // Create AI client
     aiClient = new AIClient(config, authToken.accessToken);
@@ -46,7 +32,7 @@ export async function initAI(config: any = {}): Promise<AIClient> {
     const connectionSuccess = await aiClient.testConnection();
     
     if (!connectionSuccess) {
-      throw createUserError('Failed to connect to Claude AI service', {
+      throw createUserError('Failed to connect to Juriko AI service', {
         category: ErrorCategory.CONNECTION,
         resolution: 'Check your internet connection and API key, then try again.'
       });

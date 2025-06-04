@@ -1,7 +1,7 @@
 /**
  * Terminal Interface Module
  * 
- * Provides a user interface for interacting with Claude Code in the terminal.
+ * Provides a user interface for interacting with Juriko Code in the terminal.
  * Handles input/output, formatting, and display.
  */
 
@@ -104,15 +104,15 @@ class Terminal implements TerminalInterface {
     const version = '0.2.29'; // This should come from package.json
     
     // Main logo/header
-    console.log(chalk.blue.bold('\n  Claude Code CLI'));
+    console.log(chalk.blue.bold('\n  Juriko Code CLI'));
     console.log(chalk.gray(`  Version ${version} (Research Preview)\n`));
     
     console.log(chalk.white(`  Welcome! Type ${chalk.cyan('/help')} to see available commands.`));
-    console.log(chalk.white(`  You can ask Claude to explain code, fix issues, or perform tasks.`));
+    console.log(chalk.white(`  You can ask Juriko to explain code, fix issues, or perform tasks.`));
     console.log(chalk.white(`  Example: "${chalk.italic('Please analyze this codebase and explain its structure.')}"\n`));
 
     if (this.config.useColors) {
-      console.log(chalk.dim('  Pro tip: Use Ctrl+C to interrupt Claude and start over.\n'));
+      console.log(chalk.dim('  Pro tip: Use Ctrl+C to interrupt Juriko and start over.\n'));
     }
   }
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
+import 'dotenv/config';
 /**
- * Claude Code CLI
+ * Juriko Code CLI
  * 
- * Main entry point for the Claude Code CLI tool. Handles command-line
+ * Main entry point for the Juriko Code CLI tool. Handles command-line
  * argument parsing, command dispatching, and error handling.
  */
 
@@ -10,7 +11,7 @@ import { commandRegistry, executeCommand, generateCommandHelp } from './commands
 import { logger } from './utils/logger.js';
 import { formatErrorForDisplay } from './errors/formatter.js';
 import { initAI } from './ai/index.js';
-import { authManager } from './auth/index.js';
+import { initAuthentication } from './auth/index.js';
 import { registerCommands } from './commands/register.js';
 import { UserError } from './errors/types.js';
 import pkg from '../package.json' with { type: 'json' };
@@ -41,9 +42,9 @@ function displayHelp(commandName?: string): void {
   
   // Display general help
   console.log(`
-Claude Code CLI v${version}
+Juriko Code CLI v${version}
 
-A command-line interface for interacting with Claude AI for code assistance,
+A command-line interface for interacting with Juriko AI for code assistance,
 generation, refactoring, and more.
 
 Usage:
@@ -96,7 +97,7 @@ Examples:
  * Display version information
  */
 function displayVersion(): void {
-  console.log(`Claude Code CLI v${version}`);
+  console.log(`Juriko Code CLI v${version}`);
 }
 
 /**
@@ -138,9 +139,6 @@ async function initCLI(): Promise<void> {
     // Register commands
     registerCommands();
     
-    // Initialize authentication
-    await authManager.initialize();
-    
     // Parse command-line arguments
     const { commandName, args } = parseCommandLineArgs();
     
@@ -153,10 +151,11 @@ async function initCLI(): Promise<void> {
       process.exit(1);
     }
     
-    // Check if command requires authentication
-    if (command.requiresAuth && !authManager.isAuthenticated()) {
+    // Initialize authentication if required
+    const auth = await initAuthentication();
+    if (command.requiresAuth && !auth.isAuthenticated()) {
       console.error(`Command '${commandName}' requires authentication.`);
-      console.error('Please log in using the "juriko-code login" command first.');
+      console.error('Please set the required environment variables (see .env.example).');
       process.exit(1);
     }
     

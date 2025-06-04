@@ -25,6 +25,7 @@
   "author": "anak10thn",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "inquirer": "^12.6.3",
     "node-fetch": "^3.3.1",
     "open": "^9.1.0",

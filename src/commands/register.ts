@@ -10,7 +10,7 @@ import { getAIClient, initAI } from '../ai/index.js';
 import { fileExists, readTextFile } from '../fs/operations.js';
 import { isNonEmptyString } from '../utils/validation.js';
 import { formatErrorForDisplay } from '../errors/formatter.js';
-import { authManager } from '../auth/index.js';
+import { initAuthentication } from '../auth/index.js';
 import { createUserError } from '../errors/formatter.js';
 import { ErrorCategory } from '../errors/types.js';
 
@@ -21,8 +21,6 @@ export function registerCommands(): void {
   logger.debug('Registering commands');
   
   // Register core commands
-  registerLoginCommand();
-  registerLogoutCommand();
   registerAskCommand();
   registerExplainCommand();
   registerRefactorCommand();
@@ -51,133 +49,10 @@ export function registerCommands(): void {
 /**
  * Register login command
  */
-function registerLoginCommand(): void {
-  const command: CommandDef = {
-    name: 'login',
-    description: 'Log in to Claude AI',
-    category: 'Auth',
-    handler: async (args) => {
-      try {
-        const { 'api-key': apiKey, oauth } = args;
-        
-        console.log('Authenticating with Claude...');
-        
-        if (apiKey) {
-          // Use API key authentication
-          const authResult = await authManager.authenticateWithApiKey(apiKey);
-          if (authResult.success) {
-            console.log('Successfully logged in with API key.');
-            
-            // Display token expiration if available
-            if (authResult.token?.expiresAt) {
-              const expirationDate = new Date(authResult.token.expiresAt * 1000);
-              console.log(`Token expires on: ${expirationDate.toLocaleString()}`);
-            }
-          } else {
-            console.error(`Authentication failed: ${authResult.error || 'Unknown error'}`);
-          }
-        } else if (oauth) {
-          // Use OAuth authentication
-          const authResult = await authManager.authenticateWithOAuth();
-          if (authResult.success) {
-            console.log('Successfully logged in with OAuth.');
-            
-            // Display token expiration if available
-            if (authResult.token?.expiresAt) {
-              const expirationDate = new Date(authResult.token.expiresAt * 1000);
-              console.log(`Token expires on: ${expirationDate.toLocaleString()}`);
-            }
-          } else {
-            console.error(`Authentication failed: ${authResult.error || 'Unknown error'}`);
-          }
-        } else {
-          // Determine method based on available environment variables
-          const apiKeyFromEnv = process.env.ANTHROPIC_API_KEY;
-          
-          if (apiKeyFromEnv) {
-            const authResult = await authManager.authenticateWithApiKey(apiKeyFromEnv);
-            if (authResult.success) {
-              console.log('Successfully logged in with API key from environment.');
-              
-              // Display token expiration if available
-              if (authResult.token?.expiresAt) {
-                const expirationDate = new Date(authResult.token.expiresAt * 1000);
-                console.log(`Token expires on: ${expirationDate.toLocaleString()}`);
-              }
-            } else {
-              console.error(`Authentication failed: ${authResult.error || 'Unknown error'}`);
-            }
-          } else {
-            // Default to OAuth if no API key is available
-            console.log('No API key found. Proceeding with OAuth authentication...');
-            const authResult = await authManager.authenticateWithOAuth();
-            if (authResult.success) {
-              console.log('Successfully logged in with OAuth.');
-              
-              // Display token expiration if available
-              if (authResult.token?.expiresAt) {
-                const expirationDate = new Date(authResult.token.expiresAt * 1000);
-                console.log(`Token expires on: ${expirationDate.toLocaleString()}`);
-              }
-            } else {
-              console.error(`Authentication failed: ${authResult.error || 'Unknown error'}`);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error during authentication:', formatErrorForDisplay(error));
-      }
-    },
-    args: [
-      {
-        name: 'api-key',
-        description: 'API key for Claude AI',
-        type: ArgType.STRING,
-        shortFlag: 'k'
-      },
-      {
-        name: 'oauth',
-        description: 'Use OAuth authentication',
-        type: ArgType.BOOLEAN,
-        shortFlag: 'o'
-      }
-    ],
-    examples: [
-      'login',
-      'login --api-key your-api-key'
-    ]
-  };
-  
-  commandRegistry.register(command);
-}
 
 /**
  * Register logout command
  */
-function registerLogoutCommand(): void {
-  const command: CommandDef = {
-    name: 'logout',
-    description: 'Log out and clear stored credentials',
-    category: 'Auth',
-    handler: async () => {
-      try {
-        console.log('Logging out and clearing credentials...');
-        
-        // Call the auth manager's logout function
-        await authManager.logout();
-        
-        console.log('Successfully logged out. All credentials have been cleared.');
-      } catch (error) {
-        console.error('Error during logout:', formatErrorForDisplay(error));
-      }
-    },
-    examples: [
-      'logout'
-    ]
-  };
-  
-  commandRegistry.register(command);
-}
 
 /**
  * Register ask command
@@ -185,18 +60,18 @@ function registerLogoutCommand(): void {
 function registerAskCommand(): void {
   const command: CommandDef = {
     name: 'ask',
-    description: 'Ask Claude a question about code or programming',
+    description: 'Ask Juriko a question about code or programming',
     category: 'Assistance',
     handler: async (args) => {
       try {
         const { question } = args;
         
         if (!isNonEmptyString(question)) {
-          console.error('Please provide a question to ask Claude.');
+          console.error('Please provide a question to ask Juriko.');
           return;
         }
         
-        console.log('Asking Claude...\n');
+        console.log('Asking Juriko...\n');
         
         // Get AI client and send question
         const aiClient = getAIClient();
@@ -206,13 +81,13 @@ function registerAskCommand(): void {
         const responseText = result.content[0]?.text || 'No response received';
         console.log(responseText);
       } catch (error) {
-        console.error('Error asking Claude:', formatErrorForDisplay(error));
+        console.error('Error asking Juriko:', formatErrorForDisplay(error));
       }
     },
     args: [
       {
         name: 'question',
-        description: 'Question to ask Claude',
+        description: 'Question to ask Juriko',
         type: ArgType.STRING,
         position: 0,
         required: true
@@ -225,7 +100,7 @@ function registerAskCommand(): void {
       },
       {
         name: 'model',
-        description: 'Specific Claude model to use',
+        description: 'Specific Juriko model to use',
         type: ArgType.STRING,
         shortFlag: 'm',
         choices: ['claude-3-opus', 'claude-3-sonnet', 'claude-3-haiku']
@@ -636,7 +511,7 @@ function registerBugCommand(): void {
 
   const command = {
     name: 'bug',
-    description: 'Report a bug or issue with Claude Code',
+    description: 'Report a bug or issue with Juriko Code',
     category: 'system',
     async handler(args: Record<string, any>): Promise<void> {
       logger.info('Executing bug command');
@@ -705,7 +580,7 @@ function registerFeedbackCommand(): void {
 
   const command = {
     name: 'feedback',
-    description: 'Provide general feedback about Claude Code',
+    description: 'Provide general feedback about Juriko Code',
     category: 'system',
     async handler(args: Record<string, any>): Promise<void> {
       logger.info('Executing feedback command');
@@ -714,7 +589,7 @@ function registerFeedbackCommand(): void {
       if (!isNonEmptyString(content)) {
         throw createUserError('Feedback content is required', {
           category: ErrorCategory.VALIDATION,
-          resolution: 'Please provide your feedback about Claude Code'
+          resolution: 'Please provide your feedback about Juriko Code'
         });
       }
       
@@ -752,7 +627,7 @@ function registerFeedbackCommand(): void {
     args: [
       {
         name: 'content',
-        description: 'Your feedback about Claude Code',
+        description: 'Your feedback about Juriko Code',
         type: ArgType.STRING,
         required: true
       }
@@ -772,10 +647,19 @@ function registerFeedbackCommand(): void {
 function registerRunCommand(): void {
   logger.debug('Registering run command');
 
-  const command = {
+  const command: CommandDef = {
     name: 'run',
     description: 'Execute a terminal command',
     category: 'system',
+    args: [
+      {
+        name: 'command',
+        description: 'Command to execute (e.g., "echo hello", "ls -la")',
+        type: ArgType.STRING,
+        position: 0,
+        required: true
+      }
+    ],
     async handler(args: Record<string, any>): Promise<void> {
       logger.info('Executing run command');
       
@@ -817,15 +701,8 @@ function registerRunCommand(): void {
         throw error;
       }
     },
-    args: [
-      {
-        name: 'command',
-        description: 'The command to execute',
-        type: ArgType.STRING,
-        required: true
-      }
-    ],
     examples: [
+      'run "echo hello"',
       'run "ls -la"',
       'run "npm install"',
       'run "git status"'
@@ -1315,7 +1192,7 @@ function registerExitCommand(): void {
     category: 'session',
     async handler(): Promise<void> {
       logger.info('Executing exit command');
-      console.log('Exiting Claude Code CLI...');
+      console.log('Exiting Juriko Code CLI...');
       process.exit(0);
     },
     examples: [
@@ -1338,7 +1215,7 @@ function registerQuitCommand(): void {
     category: 'session',
     async handler(): Promise<void> {
       logger.info('Executing quit command');
-      console.log('Exiting Claude Code CLI...');
+      console.log('Exiting Juriko Code CLI...');
       process.exit(0);
     },
     examples: [
@@ -1384,7 +1261,7 @@ function registerResetCommand(): void {
 
   const command = {
     name: 'reset',
-    description: 'Reset the conversation context with Claude',
+    description: 'Reset the conversation context with Juriko',
     category: 'session',
     async handler(): Promise<void> {
       logger.info('Executing reset command');

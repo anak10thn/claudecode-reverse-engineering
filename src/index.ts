@@ -1,5 +1,5 @@
 /**
- * Claude Code CLI
+ * Juriko Code CLI
  * 
  * Main entry point for the application.
  * This module bootstraps the application and manages the lifecycle.
@@ -41,7 +41,7 @@ export async function initialize(options: any = {}): Promise<AppInstance> {
   const errors = initErrorHandling();
   
   try {
-    logger.info('Starting Claude Code CLI...');
+    logger.info('Starting Juriko Code CLI...');
     
     // Load configuration
     const config = await loadConfig(options);
@@ -50,7 +50,7 @@ export async function initialize(options: any = {}): Promise<AppInstance> {
     const terminal = await initTerminal(config);
     
     // Initialize authentication
-    const auth = await initAuthentication(config);
+    const auth = await initAuthentication();
     
     // Initialize AI client
     const ai = await initAI(config);
@@ -80,7 +80,7 @@ export async function initialize(options: any = {}): Promise<AppInstance> {
       ? await initTelemetry(config) 
       : null;
     
-    logger.info('Claude Code CLI initialized successfully');
+    logger.info('Juriko Code CLI initialized successfully');
     
     return {
       config,
@@ -131,7 +131,7 @@ export async function run(app: AppInstance): Promise<void> {
  * Gracefully shut down the application
  */
 export async function shutdown(app: AppInstance): Promise<void> {
-  logger.info('Shutting down Claude Code CLI...');
+  logger.info('Shutting down Juriko Code CLI...');
   
   // Stop background tasks and release resources
   await app.codebase.stopBackgroundAnalysis();
@@ -144,7 +144,7 @@ export async function shutdown(app: AppInstance): Promise<void> {
   // Disconnect from services
   await app.ai.disconnect();
   
-  logger.info('Claude Code CLI shutdown complete');
+  logger.info('Juriko Code CLI shutdown complete');
 }
 
 /**

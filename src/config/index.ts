@@ -213,7 +213,7 @@ function validateConfig(config: any): void {
   if (!config.ai.model) {
     throw createUserError('AI model is not configured', {
       category: ErrorCategory.CONFIGURATION,
-      resolution: 'Specify a valid Claude model in your configuration'
+      resolution: 'Specify a valid Juriko model in your configuration'
     });
   }
 }

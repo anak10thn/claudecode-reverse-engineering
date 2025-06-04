@@ -1,7 +1,7 @@
 /**
  * AI Client
  * 
- * Handles interaction with Anthropic's Claude API, including
+ * Handles interaction with Anthropic's Juriko API, including
  * text completion, chat, and code assistance features.
  */
 
@@ -94,7 +94,7 @@ const DEFAULT_CONFIG = {
 };
 
 /**
- * Claude AI client for interacting with Anthropic's Claude API
+ * Juriko AI client for interacting with Anthropic's Juriko API
  */
 export class AIClient {
   private config: typeof DEFAULT_CONFIG;
@@ -127,7 +127,7 @@ export class AIClient {
   }
   
   /**
-   * Send a completion request to Claude
+   * Send a completion request to Juriko
    */
   async complete(
     prompt: string | Message[],
@@ -179,7 +179,7 @@ export class AIClient {
     } catch (error) {
       logger.error('Completion request failed', error);
       
-      throw createUserError('Failed to get response from Claude', {
+      throw createUserError('Failed to get response from Juriko', {
         cause: error,
         category: ErrorCategory.AI_SERVICE,
         resolution: 'Check your internet connection and try again. If the problem persists, verify your API key.'
@@ -188,7 +188,7 @@ export class AIClient {
   }
   
   /**
-   * Send a streaming completion request to Claude
+   * Send a streaming completion request to Juriko
    */
   async completeStream(
     prompt: string | Message[],
@@ -226,7 +226,7 @@ export class AIClient {
     } catch (error) {
       logger.error('Streaming completion request failed', error);
       
-      throw createUserError('Failed to get streaming response from Claude', {
+      throw createUserError('Failed to get streaming response from Juriko', {
         cause: error,
         category: ErrorCategory.AI_SERVICE,
         resolution: 'Check your internet connection and try again. If the problem persists, verify your API key.'
@@ -235,10 +235,10 @@ export class AIClient {
   }
   
   /**
-   * Test the connection to the Claude API
+   * Test the connection to the Juriko API
    */
   async testConnection(): Promise<boolean> {
-    logger.debug('Testing connection to Claude API');
+    logger.debug('Testing connection to Juriko API');
     
     try {
       // Send a minimal request to test connectivity
@@ -256,7 +256,7 @@ export class AIClient {
   }
   
   /**
-   * Send a request to the Claude API
+   * Send a request to the Juriko API
    */
   private async sendRequest(path: string, options: RequestInit): Promise<any> {
     const url = `${this.config.apiBaseUrl}${path}`;
@@ -285,7 +285,7 @@ export class AIClient {
   }
   
   /**
-   * Send a streaming request to the Claude API
+   * Send a streaming request to the Juriko API
    */
   private async sendStreamRequest(
     path: string, 
