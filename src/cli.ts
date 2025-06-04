@@ -31,7 +31,7 @@ function displayHelp(commandName?: string): void {
     
     if (!command) {
       console.error(`Unknown command: ${commandName}`);
-      console.error('Use "claude-code help" to see available commands.');
+      console.error('Use "juriko-code help" to see available commands.');
       process.exit(1);
     }
     
@@ -47,7 +47,7 @@ A command-line interface for interacting with Claude AI for code assistance,
 generation, refactoring, and more.
 
 Usage:
-  claude-code <command> [arguments] [options]
+  juriko-code <command> [arguments] [options]
 
 Available Commands:`);
   
@@ -82,13 +82,13 @@ Available Commands:`);
   }
   
   console.log(`For more information on a specific command, use:
-  claude-code help <command>
+  juriko-code help <command>
 
 Examples:
-  $ claude-code ask "How do I implement a binary search tree in TypeScript?"
-  $ claude-code explain path/to/file.js
-  $ claude-code refactor path/to/file.py --focus=performance
-  $ claude-code fix path/to/code.ts
+  $ juriko-code ask "How do I implement a binary search tree in TypeScript?"
+  $ juriko-code explain path/to/file.js
+  $ juriko-code refactor path/to/file.py --focus=performance
+  $ juriko-code fix path/to/code.ts
 `);
 }
 
@@ -149,14 +149,14 @@ async function initCLI(): Promise<void> {
     
     if (!command) {
       console.error(`Unknown command: ${commandName}`);
-      console.error('Use "claude-code help" to see available commands.');
+      console.error('Use "juriko-code help" to see available commands.');
       process.exit(1);
     }
     
     // Check if command requires authentication
     if (command.requiresAuth && !authManager.isAuthenticated()) {
       console.error(`Command '${commandName}' requires authentication.`);
-      console.error('Please log in using the "claude-code login" command first.');
+      console.error('Please log in using the "juriko-code login" command first.');
       process.exit(1);
     }
     

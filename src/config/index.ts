@@ -80,21 +80,21 @@ const DEFAULT_CONFIG = {
  */
 const CONFIG_PATHS = [
   // Current directory
-  path.join(process.cwd(), '.claude-code.json'),
-  path.join(process.cwd(), '.claude-code.js'),
+  path.join(process.cwd(), '.juriko-code.json'),
+  path.join(process.cwd(), '.juriko-code.js'),
   
   // User home directory
-  path.join(os.homedir(), '.claude-code', 'config.json'),
-  path.join(os.homedir(), '.claude-code.json'),
+  path.join(os.homedir(), '.juriko-code', 'config.json'),
+  path.join(os.homedir(), '.juriko-code.json'),
   
   // XDG config directory (Linux/macOS)
   process.env.XDG_CONFIG_HOME 
-    ? path.join(process.env.XDG_CONFIG_HOME, 'claude-code', 'config.json')
-    : path.join(os.homedir(), '.config', 'claude-code', 'config.json'),
+    ? path.join(process.env.XDG_CONFIG_HOME, 'juriko-code', 'config.json')
+    : path.join(os.homedir(), '.config', 'juriko-code', 'config.json'),
   
   // AppData directory (Windows)
   process.env.APPDATA
-    ? path.join(process.env.APPDATA, 'claude-code', 'config.json')
+    ? path.join(process.env.APPDATA, 'juriko-code', 'config.json')
     : null
 ].filter(Boolean) as string[];
 

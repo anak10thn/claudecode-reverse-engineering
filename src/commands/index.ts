@@ -343,7 +343,7 @@ export function parseArgs(
   if (errors.length > 0) {
     throw createUserError(`Invalid arguments: ${errors.join('; ')}`, {
       category: ErrorCategory.VALIDATION,
-      resolution: `Use 'claude-code help ${command.name}' to see usage information.`
+      resolution: `Use 'juriko-code help ${command.name}' to see usage information.`
     });
   }
   
@@ -384,7 +384,7 @@ export function generateCommandHelp(command: CommandDef): string {
   
   // Usage
   help += 'Usage:\n';
-  help += `  claude-code ${command.name}`;
+  help += `  juriko-code ${command.name}`;
   
   // Add positional args to usage
   if (command.args) {
@@ -476,7 +476,7 @@ export function generateCommandHelp(command: CommandDef): string {
     help += 'Examples:\n';
     
     for (const example of command.examples) {
-      help += `  $ claude-code ${example}\n`;
+      help += `  $ juriko-code ${example}\n`;
     }
     
     help += '\n';
@@ -502,7 +502,7 @@ export async function executeCommand(
   if (!command) {
     throw createUserError(`Unknown command: ${commandName}`, {
       category: ErrorCategory.COMMAND,
-      resolution: 'Use "claude-code help" to see available commands.'
+      resolution: 'Use "juriko-code help" to see available commands.'
     });
   }
   
@@ -568,7 +568,7 @@ export async function initCommandProcessor(
             const input = await terminal.prompt({
               type: 'input',
               name: 'command',
-              message: 'claude-code>',
+              message: 'juriko-code>',
               prefix: '',
             });
             
