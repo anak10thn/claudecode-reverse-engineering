@@ -1,7 +1,7 @@
 /**
  * AI Module
  * 
- * Provides AI capabilities using Juriko, Anthropic's large language model.
+ * Provides AI capabilities using Juriko,  large language model.
  * This module handles initialization, configuration, and access to AI services.
  */
 

@@ -1,6 +1,6 @@
 # Juriko Code
 
-A TypeScript-based CLI tool for code assistance using Anthropic's Juriko AI.
+A TypeScript-based CLI tool for code assistance using  Juriko AI.
 
 ## Installation
 

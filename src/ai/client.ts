@@ -1,7 +1,7 @@
 /**
  * AI Client
  * 
- * Handles interaction with Anthropic's Juriko API, including
+ * Handles interaction with  Juriko API, including
  * text completion, chat, and code assistance features.
  */
 
@@ -94,7 +94,7 @@ const DEFAULT_CONFIG = {
 };
 
 /**
- * Juriko AI client for interacting with Anthropic's Juriko API
+ * Juriko AI client for interacting with  Juriko API
  */
 export class AIClient {
   private config: typeof DEFAULT_CONFIG;
