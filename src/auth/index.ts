@@ -40,9 +40,18 @@ const DEFAULT_AUTH_CONFIG: AuthConfig = {
 const AUTH_STORAGE_KEY = 'anthropic-auth';
 
 /**
- * Authentication state
+ * Authentication state enum
  */
-interface AuthState {
+export enum AuthState {
+  INITIAL = 'INITIAL',
+  AUTHENTICATED = 'AUTHENTICATED',
+  FAILED = 'FAILED'
+}
+
+/**
+ * Authentication state interface
+ */
+interface AuthStateInterface {
   initialized: boolean;
   authenticated: boolean;
   token: AuthToken | null;
@@ -56,7 +65,7 @@ interface AuthState {
 export class AuthManager {
   private config: AuthConfig;
   private tokenStorage;
-  private state: AuthState;
+  private state: AuthStateInterface;
   
   /**
    * Create a new auth manager

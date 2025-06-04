@@ -61,37 +61,37 @@ export enum AuthState {
   /**
    * Initial state
    */
-  INITIAL = 'initial',
+  INITIAL = 'INITIAL',
   
   /**
    * Authentication in progress
    */
-  AUTHENTICATING = 'authenticating',
+  AUTHENTICATING = 'AUTHENTICATING',
   
   /**
    * Successfully authenticated
    */
-  AUTHENTICATED = 'authenticated',
+  AUTHENTICATED = 'AUTHENTICATED',
   
   /**
    * Authentication failed
    */
-  FAILED = 'failed',
+  FAILED = 'FAILED',
   
   /**
    * Refreshing authentication
    */
-  REFRESHING = 'refreshing',
+  REFRESHING = 'REFRESHING',
   
   /**
    * Expired authentication
    */
-  EXPIRED = 'expired',
+  EXPIRED = 'EXPIRED',
   
   /**
    * Unauthenticated state
    */
-  UNAUTHENTICATED = 'unauthenticated'
+  UNAUTHENTICATED = 'UNAUTHENTICATED'
 }
 
 /**

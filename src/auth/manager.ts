@@ -252,7 +252,7 @@ export class AuthManager extends EventEmitter {
    * Authenticate using OAuth flow
    */
   private async authenticateWithOAuth(): Promise<AuthResult> {
-    return performOAuthFlow(this.config.oauth);
+    return performOAuthFlow(this.config.oauth || DEFAULT_OAUTH_CONFIG);
   }
 
   /**
@@ -267,7 +267,7 @@ export class AuthManager extends EventEmitter {
     logger.debug('Refreshing authentication token');
     
     try {
-      const newToken = await refreshOAuthToken(this.currentToken.refreshToken, this.config.oauth);
+      const newToken = await refreshOAuthToken(this.currentToken.refreshToken, this.config.oauth || DEFAULT_OAUTH_CONFIG);
       
       // Update the current token
       this.currentToken = newToken;

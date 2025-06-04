@@ -300,4 +300,24 @@ export class UserError extends Error {
     // Capture stack trace
     Error.captureStackTrace?.(this, UserError);
   }
-} 
+}
+
+/**
+ * Error manager interface
+ */
+export interface ErrorManager {
+  /**
+   * Handle an error
+   */
+  handleError(error: unknown, options?: ErrorOptions): void;
+  
+  /**
+   * Format an error for display
+   */
+  formatError(error: unknown): string;
+  
+  /**
+   * Report an error to monitoring systems
+   */
+  reportError(error: unknown, options?: ErrorOptions): void;
+}

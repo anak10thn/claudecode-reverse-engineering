@@ -223,8 +223,8 @@ class Terminal implements TerminalInterface {
   /**
    * Prompt user for input
    */
-  async prompt<T>(options: PromptOptions): Promise<T> {
-    return createPrompt(options, this.config);
+  async prompt<T extends Record<string, any>>(options: PromptOptions): Promise<T> {
+    return createPrompt<T>(options, this.config);
   }
 
   /**

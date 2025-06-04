@@ -98,21 +98,16 @@ class ErrorHandlerImpl implements ErrorManager {
     const formattedError = this.formatError(error, options);
     
     // Log the error based on level
-    switch (level) {
-      case ErrorLevel.CRITICAL:
-      case ErrorLevel.MAJOR:
-        logger.error(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
-        break;
-      case ErrorLevel.MINOR:
-        logger.warn(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
-        break;
-      case ErrorLevel.INFORMATIONAL:
-        logger.info(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
-        break;
+    if (level <= ErrorLevel.MAJOR) {
+      logger.error(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
+    } else if (level === ErrorLevel.MINOR) {
+      logger.warn(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
+    } else if (level === ErrorLevel.INFORMATIONAL) {
+      logger.info(`[${ErrorCategory[category]}] ${formattedError.message}`, formattedError);
     }
     
     // Report to telemetry/monitoring if appropriate
-    if (level === ErrorLevel.CRITICAL || level === ErrorLevel.MAJOR) {
+    if (level <= ErrorLevel.MAJOR) {
       this.reportError(formattedError, options);
     }
   }
@@ -120,9 +115,9 @@ class ErrorHandlerImpl implements ErrorManager {
   /**
    * Format an error object for consistent handling
    */
-  private formatError(error: unknown, options: ErrorOptions = {}): any {
+  formatError(error: unknown, options: ErrorOptions = {}): any {
     try {
-      return formatErrorForDisplay(error, options);
+      return formatErrorForDisplay(error);
     } catch (formattingError) {
       // If formatting fails, return a basic error object
       return {
@@ -153,7 +148,7 @@ class ErrorHandlerImpl implements ErrorManager {
   /**
    * Report an error to monitoring/telemetry systems
    */
-  private reportError(error: any, options: ErrorOptions = {}): void {
+  reportError(error: any, options: ErrorOptions = {}): void {
     // We're skipping Sentry SDK as requested
     // In a real implementation, this would send the error to Sentry
     

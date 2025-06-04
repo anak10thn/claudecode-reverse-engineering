@@ -242,7 +242,7 @@ export interface TerminalInterface {
   /**
    * Prompt user for input
    */
-  prompt<T>(options: PromptOptions): Promise<T>;
+  prompt<T extends Record<string, any>>(options: PromptOptions): Promise<T>;
   
   /**
    * Create a spinner for showing progress

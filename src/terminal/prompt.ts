@@ -11,7 +11,7 @@ import { logger } from '../utils/logger.js';
 /**
  * Create and display a prompt for user input
  */
-export async function createPrompt<T>(options: PromptOptions, config: TerminalConfig): Promise<T> {
+export async function createPrompt<T extends Record<string, any>>(options: PromptOptions, config: TerminalConfig): Promise<T> {
   logger.debug('Creating prompt', { type: options.type, name: options.name });
   
   // Add validation for required fields
@@ -32,15 +32,15 @@ export async function createPrompt<T>(options: PromptOptions, config: TerminalCo
   
   try {
     // Use Inquirer to create the prompt
-    const result = await inquirer.prompt([{
+    const result = await inquirer.prompt({
       ...options,
       // Make sure name is a string
       name: String(options.name)
-    }]);
+    } as any);
     
     logger.debug('Prompt result', { name: options.name, result: result[options.name] });
     
-    return result;
+    return result as T;
   } catch (error) {
     logger.error('Error in prompt', error);
     throw new Error(`Failed to prompt for ${options.name}: ${error instanceof Error ? error.message : String(error)}`);
